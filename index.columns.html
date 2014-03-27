@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" ng-app="ganttApp">
+<head>
+	<meta charset="utf-8">
+	<title>Angular Gantt demo</title>
+
+	<link rel="stylesheet" href="lib/gantt/dhtmlxgantt.css">
+
+	<script src="lib/angular/angular.min.js"></script>
+	<script src="lib/gantt/dhtmlxgantt.js"></script>
+
+	<script src="js/app.js"></script>
+	<script src="js/app.gantt.js"></script>
+</head>
+<body ng-controller="MainGanttCtrl">
+
+	<div data="tasks" dhx-gantt style="height:300px; width:100%;">
+		<div gantt-column label="Task">{{task.text | lowercase}}</div>
+		<div gantt-column align="center" width="200"  label="Duration">{{task.duration}}</div>
+		<div gantt-column-add width="45"></div>
+
+		<div gantt-template="task_text">
+			<strong>#{{task.id}}</strong>: {{task.text | uppercase}}
+		</div>
+	</div>		
+
+</body>
+</html>
