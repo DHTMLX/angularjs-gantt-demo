@@ -3,12 +3,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>Angular Gantt demo</title>
-
-	<link rel="stylesheet" href="lib/gantt/dhtmlxgantt.css">
-
-	<script src="lib/angular/angular.min.js"></script>
-	<script src="lib/gantt/dhtmlxgantt.js"></script>
-
+	<link rel="stylesheet" href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	<script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/app.gantt.js"></script>
 </head>
@@ -18,7 +15,7 @@
 		<div gantt-template="task_text">
 			<strong>#{{task.id}}</strong>: {{task.text | uppercase}}
 		</div>
-	</div>		
+	</div>
 
 </body>
 </html>

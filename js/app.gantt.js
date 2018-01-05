@@ -27,34 +27,23 @@ app.directive('dhxGantt', function() {
   };
 });
 
-
-function templateHelper($element){
-  var template = $element[0].innerHTML;
-  return template.replace(/[\r\n]/g,"").replace(/"/g, "\\\"").replace(/\{\{task\.([^\}]+)\}\}/g, function(match, prop){
-    if (prop.indexOf("|") != -1){
-      var parts = prop.split("|");
-      return "\"+gantt.aFilter('"+(parts[1]).trim()+"')(task."+(parts[0]).trim()+")+\"";
-    }
-    return '"+task.'+prop+'+"';
-  });
-}
-app.directive('ganttTemplate', ['$filter', function($filter){
-  gantt.aFilter = $filter;
-
+app.directive('ganttTemplate', ['$interpolate', function($interpolate){
   return {
     restrict: 'AE',
     terminal:true,
    
     link:function($scope, $element, $attrs, $controller){
-      var template =  Function('sd','ed','task', 'return "'+templateHelper($element)+'"');
-      gantt.templates[$attrs.ganttTemplate] = template;
+
+      var interpolated = $interpolate($element.html());
+
+      gantt.templates[$attrs.ganttTemplate] = function(start, end, task){
+        return interpolated({task: task});
+      };
     }
   };
 }]);
 
-app.directive('ganttColumn', ['$filter', function($filter){
-  gantt.aFilter = $filter;
-
+app.directive('ganttColumn', ['$interpolate', function($interpolate){
   return {
     restrict: 'AE',
     terminal:true,
@@ -64,7 +53,11 @@ app.directive('ganttColumn', ['$filter', function($filter){
       var width  = $attrs.width || "*";
       var align  = $attrs.align || "left";
 
-      var template =  Function('task', 'return "'+templateHelper($element)+'"');
+      var interpolated = $interpolate($element.html());
+      var template = function(task) {
+        return interpolated({ task: task });
+      };
+
       var config = { template:template, label:label, width:width, align:align };
       
       if (!gantt.config.columnsSet)
@@ -78,7 +71,7 @@ app.directive('ganttColumn', ['$filter', function($filter){
   };
 }]);
 
-app.directive('ganttColumnAdd', ['$filter', function($filter){
+app.directive('ganttColumnAdd', [function(){
   return {
     restrict: 'AE',
     terminal:true,
